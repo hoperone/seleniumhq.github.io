@@ -98,7 +98,44 @@ namespace SeleniumDocumentation.SeleniumPRs
 
   {{< /tab >}}
   {{< tab header="JavaScript" >}}
-// Help us by sending a code sample for file upload
+const { Builder } = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
+const { Options } = require("selenium-webdriver/chrome");
+
+// set up Chrome options
+const options = new Options();
+options.addArguments("start-maximized");
+
+// set up the Chrome driver
+const driver = new Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(options)
+    .build();
+
+driver.manage().setTimeouts({ implicit: 10000 }); // Set implicit timeout
+
+// Navigate to a webpage
+driver.get("https://the-internet.herokuapp.com/upload");
+
+// Upload the file
+const fileInput = driver.findElement(By.id("file-upload"));
+fileInput.sendKeys("selenium-snapshot.jpg");
+
+// Submit the form
+driver.findElement(By.id("file-submit")).submit();
+
+// Verify that the file was uploaded
+driver.getPageSource().then(function (pageSource) {
+  if (pageSource.includes("File Uploaded!")) {
+    console.log("file uploaded");
+  } else {
+    console.log("file not uploaded");
+  }
+});
+
+// Close the browser
+driver.quit();
+
   {{< /tab >}}
   {{< tab header="Kotlin" >}}
   // Help us by sending a code sample for file upload
